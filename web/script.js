@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         showRefreshPopup("Mining completed.\n " +
             "Open the miner again to see the updated balance. ✅");
     }
-x
+
     function loadWalletData(data) {
         if (walletAddressElement) {
             const fullWallet = data.wallet;

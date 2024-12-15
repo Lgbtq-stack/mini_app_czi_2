@@ -159,7 +159,7 @@ x
                             hour: "2-digit",
                             minute: "2-digit"
                         });
-                        addHistoryItem(iconUrl, `You received ${amount} ${token}`, formattedTime, formattedDate);
+                        addHistoryItem(iconUrl, `You received \n ${amount} ${token}`, formattedTime, formattedDate);
                     });
                 }
             });

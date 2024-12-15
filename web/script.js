@@ -53,14 +53,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         wallet_data = await get_config(userId); // Запрос конфига из datacontroller
         // wallet_data = localConfig; // Запрос конфига из datacontroller
 
-
-        if (!wallet_data.tokens.BTC.time_to_mine || wallet_data.tokens.BTC.time_to_mine.trim() === "") {
-            showPopup(`Please close your minning account and open it up again to get the your information UpToDate. 🛠`, false);
+        if(!wallet_data.wallet || wallet_data.wallet.trim() === "") {
+            showPopup(`You don't have active wallet. ⚠️`, false);
             return null;
         }
 
-        if(!wallet_data.wallet || wallet_data.tokens.BTC.time_to_mine.trim() === "") {
-            showPopup(`You don't have active wallet. ⚠️`, false);
+        if (!wallet_data.tokens.BTC.time_to_mine || wallet_data.tokens.BTC.time_to_mine.trim() === "") {
+            showPopup(`Please close your minning account and open it up again to get the your information UpToDate. 🛠`, false);
             return null;
         }
 
@@ -159,7 +158,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             hour: "2-digit",
                             minute: "2-digit"
                         });
-                        addHistoryItem(iconUrl, `You received \n ${amount} ${token}`, formattedTime, formattedDate);
+                        addHistoryItem(iconUrl, `You received \n  ${amount} ${token}`, formattedTime, formattedDate);
                     });
                 }
             });
@@ -239,8 +238,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         }, 2000); // Делаем паузу для загрузки
     }
     function updatePopups() {
-        addPopups(topPopupsContainer, usedPositionsTop);
-        addPopups(bottomPopupsContainer, usedPositionsBottom);
+        try {
+            addPopups(topPopupsContainer, usedPositionsTop);
+            addPopups(bottomPopupsContainer, usedPositionsBottom);
+        } catch (error) {
+            console.error("Ошибка в updatePopups:", error);
+        }
     }
 
     function addPopups(container, usedPositions) {
@@ -316,12 +319,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             attempts++;
         } while (isOverlapping(position, usedPositions) && attempts < 100);
 
-        if (attempts < 100) {
-            usedPositions.push(position);
-            return position;
-        } else {
-            return null;
-        }
+        // if (attempts < 100) {
+        usedPositions.push(position);
+        return position;
+        // } else {
+        //     return null;
+        // }
     }
 
     function isOverlapping(newPos, usedPositions) {

@@ -61,6 +61,11 @@ app.get('/api/wallets/active/:user_id', async (req, res) => {
 
 app.get('/api/wallets/data/:wallet_address', async (req, res) => {
     const {wallet_address} = req.params;
+
+    if (!wallet_address) {
+        return res.status(400).json({error: 'Wallet address is required'});
+    }
+
     console.log('Getting active wallet for wallet', wallet_address);
     try {
         const activeWallet = await db('wallets')

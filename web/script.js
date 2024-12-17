@@ -369,16 +369,28 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         function calculateRemainingTime() {
             const now = new Date();
-            const todayTarget = new Date();
+            const utcNow = new Date(
+                Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+                    now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds())
+            );
 
-            todayTarget.setHours(hours, minutes, seconds, 0);
+            // Устанавливаем целевое время в UTC
+            const todayTargetUTC = new Date(Date.UTC(
+                utcNow.getUTCFullYear(),
+                utcNow.getUTCMonth(),
+                utcNow.getUTCDate(),
+                hours,
+                minutes,
+                seconds,
+                0
+            ));
 
-            // Если текущее время больше целевого, переносим на следующий день
-            if (now > todayTarget) {
-                todayTarget.setDate(todayTarget.getDate() + 1);
+            // Если текущее UTC время больше целевого, переносим на следующий день
+            if (utcNow > todayTargetUTC) {
+                todayTargetUTC.setUTCDate(todayTargetUTC.getUTCDate() + 1);
             }
 
-            const diff = todayTarget - now; // Разница во времени в миллисекундах
+            const diff = todayTargetUTC - utcNow; // Разница во времени в миллисекундах
             const totalDuration = 24 * 60 * 60 * 1000; // Продолжительность в миллисекундах (24 часа)
 
             if (diff <= 0) {

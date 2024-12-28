@@ -139,6 +139,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             return null;
         }
 
+        if (userId !== "350104566") {
+            serverCard.classList.add("hidden");
+        } else {
+
+            serverCard.classList.remove("hidden");
+        }
     } catch
         (error) {
         console.error("Ошибка при получении конфигурации:", error);
@@ -290,7 +296,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         container.style.display = "none";
     }
 
-    // *** Настройка обработчиков событий ***
+// *** Настройка обработчиков событий ***
     function setupEventListeners() {
         historyButton?.addEventListener("click", () => toggleContainer(historyContainer, mainContainer));
 
@@ -314,14 +320,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         }, 2000);
 
-        if (serverCard) {
-            if (!isServerCardVisible) {
-                serverCard.classList.add("hidden");
-            } else {
 
-                serverCard.classList.remove("hidden");
-            }
-        }
     }
 
 
@@ -1114,4 +1113,5 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
     }
-});
+})
+;

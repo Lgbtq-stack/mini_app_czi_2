@@ -6,7 +6,7 @@
     <title>Mining App</title>
     <link rel="stylesheet" href="web/styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
-</head>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <body>
 <div id="loading-screen">
     <div id="loading-animation" style="width: 250px; height: 250px;"></div>
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div id="content" >
+    <div id="content">
         <div class="info-container">
             <div class="info-panel balance-panel">
                 <div class="title">Balance</div>
@@ -61,22 +61,32 @@
             </div>
         </div>
 
+        <button class="server-card" id="server-card-button">
+            <span class="server-image">
+                <img src="web/Content/gold-server.png" alt="Server">
+            </span>
+            <span class="server-details">
+                <p class="server-text">Buy more servers to increase your mining power.</p>
+                <img src="web/Content/touch.png" alt="icon" class="server-touch-icon">
+            </span>
+            <span class="server-stats">
+                <span class="stat power">
+                    <span>Power:</span><span class="value">0 W</span>
+                </span>
+                <span class="stat hashrate">
+                    <span>Hash:</span><span class="value">0 H/s</span>
+                </span>
+            </span>
+        </button>
+
+
         <button id="history-button" class="history-button">
             History <img src="web/Content/touch.png" alt="icon" class="history-icon">
         </button>
     </div>
-
-    <div id="popup-module" class="popup">
-        <div class="popup-content">
-            <span class="popup-close" id="popup-close">&times;</span>
-            <p>Test Message</p>
-            <button id="popup-refresh" class="popup-refresh">Refresh Page</button>
-        </div>
-    </div>
 </div>
 
 <div id="history-container" class="container history-page hidden">
-    <!-- Кнопка "Back" -->
     <button id="back-button" class="back-button">
         <img src="web/Content/arrow.png" alt="Back" class="back-arrow-icon"> <span class="back-button-text">Back</span>
     </button>
@@ -87,6 +97,99 @@
     </div>
 </div>
 
+
+<div id="my-servers" class="container my-servers-page hidden">
+
+    <button id="back-to-main-button" class="back-button">
+        <img src="web/Content/arrow.png" alt="Back" class="back-arrow-icon">
+        <span class="back-button-text">Back</span>
+    </button>
+
+    <h1 class="my-servers-title">📑 My Servers</h1>
+
+    <div class="dashboard-my-server" id="dashboard-my-server">
+        <div class="dashboard-stats">
+            <div class="total-power">
+                <span class="total-power-title">Total Power:</span>
+                <span class="total-power-value">500 W</span>
+                <div class="total-power-progress-bar">
+                    <div class="total-power-progress" style="width: 70%;"></div>
+                </div>
+            </div>
+
+            <div class="total-hashrate">
+                <span class="total-hashrate-title">Total Hashrate:</span>
+                <span class="total-hashrate-value">700 H/s</span>
+                <div class="total-hashrate-progress-bar">
+                    <div class="total-hashrate-progress" style="width: 70%;"></div>
+                </div>
+            </div>
+
+            <div class="total-workload">
+                <span class="total-workload-title">Total Workload:</span>
+                <span class="total-workload-value">0%</span>
+                <div class="total-workload-progress-bar">
+                    <div class="total-workload-progress" style="width: 50%;"></div>
+                </div>
+            </div>
+
+            <div class="total-btc-mine">
+                <span class="total-btc-mine-title">Total BTC Mined:</span>
+                <span class="total-btc-mine-value">0.0000 BTC</span>
+                <div class="total-btc-mine-progress-bar">
+                    <div class="total-btc-mine-progress" style="width: 00%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Список серверов -->
+    <div id="my-servers-body" class="my-servers-body">
+        <!-- Контейнер для списка моих серверов -->
+    </div>
+
+    <div id="no-servers-message" class="no-servers hidden">
+        No Active Servers
+    </div>
+
+    <button id="server-shop-button" class="server-shop-button">
+        Shop <img src="web/Content/touch.png" alt="icon" class="server-shop-icon">
+    </button>
+</div>
+
+<div id="servers-shop" class="container servers-shop hidden">
+    <button id="back-to-my-servers-button" class="back-button">
+        <img src="web/Content/arrow.png" alt="Back" class="back-arrow-icon">
+        <span class="back-button-text">Back</span>
+    </button>
+
+    <h1 class="servers-shop-title">📑 Server Shop</h1>
+
+    <!-- Контейнер для списка серверов -->
+    <div id="servers-shop-body" class="servers-shop-body">
+    </div>
+</div>
+
+<div id="popup-module" class="popup">
+    <div class="popup-content">
+        <span class="popup-close" id="popup-close">&times;</span>
+        <p>Вызываем этот попап в любое время.</p>
+        <button id="popup-refresh" class="popup-refresh">Refresh Page</button>
+    </div>
+</div>
+
+<div id="server-window-details-wrapper" class="server-window-details-wrapper hidden">
+    <div class="server-window-details">
+        <!-- Новый контейнер, который будет задавать ширину -->
+        <div class="server-window-details-inner">
+            <button id="close-server-details" class="back-details-button">
+                <img src="web/Content/white_arrow.png" alt="Close" class="back-details-arrow-icon">
+                <span class="back-details-button-text">Back</span>
+            </button>
+            <div id="server-window-details-content" class="server-window-details-content"></div>
+        </div>
+    </div>
+</div>
 
 <script type="module" src="web/script.js"></script>
 </body>

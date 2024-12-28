@@ -6,8 +6,12 @@
 html, body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
     width: 100%;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
 }
 
 .hidden {
@@ -24,7 +28,7 @@ html, body {
 }
 
 #history-container {
-    display: none; /* Изначально скрыт */
+    display: none;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -72,7 +76,7 @@ html, body {
 }
 
 .wallet-container {
-    width: 90%;
+    width: 92%;
     max-width: 700px;
     padding: 15px 0;
     border-bottom-left-radius: 10px;
@@ -146,19 +150,6 @@ html, body {
     font-size: 16px;
 }
 
-body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 1) 100%
-    );
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-}
 
 #header {
     display: flex;
@@ -193,12 +184,6 @@ body {
     pointer-events: none;
     z-index: 1;
 }
-
-/*.animation-container {*/
-/*    width: 100%;*/
-/*    text-align: center;*/
-/*    margin: 20px 0;*/
-/*}*/
 
 .info-container {
     display: flex;
@@ -266,6 +251,7 @@ body {
     overflow: hidden;
     padding: 0 10px;
     z-index: 1;
+    margin-top: -20px;
 }
 
 .dynamic-popup {
@@ -292,11 +278,21 @@ body {
 }
 
 @keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
 
 .mining-content {
@@ -306,8 +302,8 @@ body {
 }
 
 .progress-container {
-    width: 90%;
-    margin-bottom: 50px;
+    width: 100%;
+    margin-bottom: 20px;
     text-align: center;
     position: relative;
 }
@@ -369,7 +365,7 @@ body {
     text-align: center;
     color: #000;
     cursor: pointer;
-    width: 90%;
+    width: 100%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     gap: 5px;
     margin-bottom: 10px;
@@ -421,7 +417,7 @@ body {
 }
 
 .title {
-    font-size: 20px;
+    font-size: 16px;
     margin-top: 7px;
     font-weight: bold;
     color: #333;
@@ -510,9 +506,9 @@ body {
     font-size: 14px;
     color: rgba(102, 102, 102, 0.75);
     text-align: left;
-    /*white-space: nowrap;*/
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: pre-line;
 }
 
 .history-item-time {
@@ -546,4 +542,630 @@ body {
     border-radius: 10px;
     margin: 10px 0;
     border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.server-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    outline: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin: 25px 0;
+}
+
+.server-image {
+    position: absolute;
+    transform: translateY(-10%);
+    z-index: 2;
+}
+
+.server-image img {
+    width: 75px;
+    height: auto;
+}
+
+.server-details {
+    flex-grow: 1;
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+    margin: 0 20px;
+    word-wrap: break-word;
+}
+
+.server-text {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    margin-left: 75px;
+}
+
+.server-touch-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 75px;
+
+}
+
+.server-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat {
+    background: linear-gradient(90deg, #fdf177, #fcd32d);
+    border-radius: 8px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stat span.value {
+    margin-left: 10px;
+}
+
+
+.container.my-servers-page {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+    overflow: visible;
+}
+
+.container.my-servers-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(90deg, #ffdf00 0%, #fff 50%, #faf9d2 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.container.my-servers-page::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.my-servers-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 60px;
+    position: relative;
+    z-index: 3;
+}
+
+.dashboard-my-server {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 4;
+}
+
+.dashboard-stats div {
+    margin-bottom: 15px;
+}
+
+.dashboard-stats span {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.total-power-progress-bar,
+.total-hashrate-progress-bar,
+.total-btc-mine-progress-bar,
+.total-workload-progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.total-power-progress,
+.total-hashrate-progress,
+.total-btc-mine-progress,
+.total-workload-progress {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.total-power-progress {
+    background-color: #4caf50;
+    width: 70%;
+}
+
+.total-hashrate-progress {
+    background-color: #2196f3;
+    width: 70%;
+}
+
+.total-workload-progress {
+    background-color: #ff9800;
+    width: 50%;
+}
+
+.total-btc-mine-progress {
+    background-color: #ffeb3b;
+    width: 50%;
+}
+
+.my-servers-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    justify-items: center;
+    position: relative;
+    z-index: 3;
+}
+
+.my-server-card {
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(255, 206, 0, 0.64);
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+
+/* Иконка и название */
+.server-icon-and-name {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.server-icon {
+    width: 80px;
+    height: auto;
+}
+
+.server-name {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+}
+
+.server-flag {
+    margin-left: 5px;
+}
+
+/* Статистика сервера */
+.server-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Стиль для статов */
+.power-stat-container,
+.gpu-stat-container,
+.gpu-name-stat-container,
+.ram-stat-container,
+.price-stat-container,
+.availability-stat-container,
+.status-stat-container,
+.ram-stat-container {
+    background: #ffeb3b;
+    padding: 10px 10px;
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+}
+
+.hashrate-stat-container,
+.gpu-count-stat-container,
+.country-stat-container,
+.btc-mine-stat-container {
+    padding: 0 10px;
+}
+
+.power-stat-name,
+.hashrate-stat-name,
+.status-stat-name,
+.gpu-stat-name,
+.gpu-count-stat-name,
+.btc-mine-stat-name,
+.gpu-name-stat-name,
+.ram-stat-name,
+.price-stat-name,
+.country-stat-name,
+.availability-stat-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.power-stat-value,
+.hashrate-stat-value,
+.status-stat-value {
+    color: #555;
+}
+
+.power-progress-bar,
+.hashrate-progress-bar,
+.status-progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ddd;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.power-progress,
+.power-details-progress {
+    height: 100%;
+    background-color: #8bc34a; /* Зелёный */
+}
+
+.hashrate-progress,
+.hashrate-details-progress {
+    height: 100%;
+    background-color: #ff9800; /* Оранжевый */
+}
+
+.status-progress,
+.ram-details-progress {
+    height: 100%;
+    background-color: #2196f3; /* Синий */
+}
+
+.server-shop-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, #ffeb3b, #fbc02d);
+    padding: 10px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+    z-index: 3;
+}
+
+.no-servers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.22), rgba(108, 108, 108, 0.65));
+    padding: 10px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    z-index: 3;
+}
+
+.hidden {
+    display: none;
+}
+
+.server-shop-icon {
+    width: 25px;
+    height: 25px;
+}
+
+.container.servers-shop {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: relative;
+    overflow: auto;
+}
+
+.container.servers-shop::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(90deg, #ffdf00 0%, #fff 50%, #faf9d2 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.container.servers-shop::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Заголовок */
+.servers-shop-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 60px;
+    z-index: 2;
+}
+
+/* Список серверов */
+.servers-shop-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    justify-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.shop-server-card {
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(255, 206, 0, 0.64);
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.buy-new-server-button {
+    background: linear-gradient(90deg, #ffeb3b, #fbc02d);
+    padding: 5px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 3;
+    justify-content: center;
+}
+
+.buy-server-icon {
+    width: 25px;
+    height: 25px;
+    transform: translateY(25%);
+}
+
+.sold-out-button {
+    background: linear-gradient(45deg, #d3d3d3, #a9a9a9);
+    color: #ffffff;
+    cursor: not-allowed;
+    padding: 5px 15px 10px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 3;
+    justify-content: center;
+}
+
+.server-window-details-wrapper.hidden {
+    display: none;
+}
+
+.server-window-details-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.server-window-details {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(97, 97, 97, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+
+}
+
+.server-window-details-inner {
+    width: 400px;
+    max-width: 90%;
+    min-width: 30%;
+    background-color: rgba(97, 97, 97, 0.7);
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 10000;
+}
+
+#close-server-details {
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Заголовок сервера */
+.server-details-header {
+    text-align: center;
+    padding: 0 50px;
+}
+
+.server-details-stats .stat-details:nth-child(even) {
+    background: #ffeb3b; /* Жёлтый фон */
+}
+
+.server-details-header .server-details-icon {
+    width: 90px;
+    height: 140px;
+    display: block;
+    margin: 0 auto;
+}
+
+.server-details-header .server-details-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.server-details-stats {
+    background: #f7f7f7;
+    padding: 10px 0 0 0;
+    box-sizing: border-box;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.stat-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.stat-details-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.stat-details-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.stat-details-value {
+    font-size: 0.9rem;
+    color: #333;
+    text-align: right;
+}
+
+.progress-bar-wrapper {
+    width: 100%;
+}
+
+.flag-icon {
+    width: 20px;
+    height: 15px;
+    border-radius: 2px;
+}
+
+.progress-bar-wrapper .power-details-progress-bar,
+.progress-bar-wrapper .hashrate-details-progress-bar,
+.progress-bar-wrapper .ram-details-progress-bar {
+    overflow: clip;
+}
+
+.power-details-progress-bar,
+.hashrate-details-progress-bar,
+.ram-details-progress-bar {
+    width: 100%;
+    height: 10px;
+}
+
+.power-details-progress,
+.hashrate-details-progress,
+.ram-details-progress {
+    height: 100%;
+}
+
+.back-details-arrow-icon {
+    width: 16px;
+    height: 24px;
+    color: white;
+}
+
+.back-details-button-text{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.back-details-button {
+    position: absolute;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    animation: move-left 1.5s infinite ease-in-out;
+}
+
+.server-icon-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+.server-touch-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
 }

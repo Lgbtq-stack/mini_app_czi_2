@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "name": "Ultra Titan Series",
                 "country": "US",
                 "available": 100,
-                "created_at": "2024-12-27T01:13:40.956881",
+                "created_at": "2024-12-29T01:13:40.956881",
                 "total_mined_days": 0
             },
             "h900p1800r1024g256": {
@@ -139,11 +139,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             return null;
         }
 
-        // if (userId !== "350104566" && userId !== "7059036846") {
+        // if (userId !== "350104566") {
         //     serverCard.classList.add("hidden");
         // } else {
 
-        serverCard.classList.remove("hidden");
+            serverCard.classList.remove("hidden");
         //}
     } catch
         (error) {
@@ -1005,79 +1005,87 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         const createdAt = new Date(created_at);
         const currentDate = new Date();
-
         const totalMinedDays = Math.floor((currentDate - createdAt) / (1000 * 3600 * 24));
 
-        let todayBTC = 0;
+        let totalBTC = 0;
 
-        if (totalMinedDays === 0) {
-            const currentHour = currentDate.getUTCHours();
-            const currentMinutes = currentDate.getUTCMinutes();
+        // Функция для расчёта BTC с учётом времени
+        function calculateBTC() {
+            const nowUTC = new Date();
+            const elapsedMilliseconds = nowUTC - createdAt;
+            const elapsedDays = Math.floor(elapsedMilliseconds / (1000 * 3600 * 24));
 
-            const remainingHours = 24 - currentHour - (currentMinutes / 60);
-            todayBTC = (btc_mine / 24) * remainingHours;
-        } else {
-            todayBTC = btc_mine;
+            totalBTC = elapsedDays * btc_mine;
+
+            const currentHour = nowUTC.getUTCHours();
+            const currentMinutes = nowUTC.getUTCMinutes();
+            const currentSeconds = nowUTC.getUTCSeconds();
+
+            const elapsedTimeInToday = (currentHour * 3600 + currentMinutes * 60 + currentSeconds) / (24 * 3600);
+            const todayBTC = btc_mine * elapsedTimeInToday;
+
+            totalBTC += todayBTC;
         }
 
-        const totalBTC = totalMinedDays * btc_mine + todayBTC;
+        function updateDetails() {
+            calculateBTC();
 
-        detailsContent.innerHTML = `
-    
-    <div class="server-details-stats">
-        <div class="server-details-header">
-            <img class="server-details-icon" src="web/Content/server-icon.png" alt="Server Icon">
-            <h2 class="server-details-name">${name || "Server"}</h2>
-        </div>
-        <div class="stat-details">
-            <span class="stat-details-title">Total Mined:</span>
-            <span class="stat-details-value">${totalBTC.toFixed(4)} BTC</span>
-        </div>
-        <div class="stat-details">
-            <span class="stat-details-title">Purchased On:</span>
-            <span class="stat-details-value">${created_at ? new Date(created_at).toLocaleDateString() : "N/A"}</span>
-        </div>
-        <div class="stat-details">
-            <span class="stat-details-title">Country:</span>
-            <span class="stat-details-value">
-                <img src="https://flagcdn.com/h40/${country.toLowerCase()}.png" alt="${country}" class="flag-icon">
-            </span>
-        </div>
-        <div class="stat-details">
-            <span class="stat-details-title">Daily BTC Mine:</span>
-            <span class="stat-details-value">${btc_mine.toFixed(4)} BTC</span>
-        </div>
-        <div class="stat-details">
-            <span class="stat-details-title">Power:</span>
-            <span class="stat-details-value">${specs.power} W</span>
-        </div>
-        <div class="progress-bar-wrapper">
-            <div class="power-details-progress-bar">
-                <div class="power-details-progress" style="width: ${Math.min(specs.power / 16, 100)}%;"></div>
+            detailsContent.innerHTML = `
+        <div class="server-details-stats">
+            <div class="server-details-header">
+                <img class="server-details-icon" src="web/Content/server-icon.png" alt="Server Icon">
+                <h2 class="server-details-name">${name || "Server"}</h2>
+            </div>
+            <div class="stat-details">
+                <span class="stat-details-title">Total Mined:</span>
+                <span class="stat-details-value">${totalBTC.toFixed(4)} BTC</span>
+            </div>
+            <div class="stat-details">
+                <span class="stat-details-title">Purchased On:</span>
+                <span class="stat-details-value">${created_at ? new Date(created_at).toLocaleDateString() : "N/A"}</span>
+            </div>
+            <div class="stat-details">
+                <span class="stat-details-title">Country:</span>
+                <span class="stat-details-value">
+                    <img src="https://flagcdn.com/h40/${country.toLowerCase()}.png" alt="${country}" class="flag-icon">
+                </span>
+            </div>
+            <div class="stat-details">
+                <span class="stat-details-title">Daily BTC Mine:</span>
+                <span class="stat-details-value">${btc_mine.toFixed(4)} BTC</span>
+            </div>
+            <div class="stat-details">
+                <span class="stat-details-title">Power:</span>
+                <span class="stat-details-value">${specs.power} W</span>
+            </div>
+            <div class="progress-bar-wrapper">
+                <div class="power-details-progress-bar">
+                    <div class="power-details-progress" style="width: ${Math.min(specs.power / 16, 100)}%;"></div>
+                </div>
+            </div>
+            <div class="stat-details">
+                <span class="stat-details-title">Hashrate:</span>
+                <span class="stat-details-value">${specs.hashrate} H/s</span>
+            </div>
+            <div class="progress-bar-wrapper">
+                <div class="hashrate-details-progress-bar">
+                    <div class="hashrate-details-progress" style="width: ${Math.min(specs.hashrate / 12, 100)}%;"></div>
+                </div>
+            </div>
+            <div class="stat-details">
+                <span class="stat-details-title">RAM:</span>
+                <span class="stat-details-value">${specs.ram} GB</span>
+            </div>
+            <div class="progress-bar-wrapper">
+                <div class="ram-details-progress-bar">
+                    <div class="ram-details-progress" style="width: ${Math.min(specs.ram / 23, 100)}%;"></div>
+                </div>
             </div>
         </div>
-        
-        <div class="stat-details">
-            <span class="stat-details-title">Hashrate:</span>
-            <span class="stat-details-value">${specs.hashrate} H/s</span>
-        </div>
-        <div class="progress-bar-wrapper">
-            <div class="hashrate-details-progress-bar">
-                <div class="hashrate-details-progress" style="width: ${Math.min(specs.hashrate / 12, 100)}%;"></div>
-            </div>
-        </div>
-        
-        <div class="stat-details">
-            <span class="stat-details-title">RAM:</span>
-            <span class="stat-details-value">${specs.ram} GB</span>
-        </div>
-        <div class="progress-bar-wrapper">
-            <div class="ram-details-progress-bar">
-                <div class="ram-details-progress" style="width: ${Math.min(specs.ram / 23, 100)}%;"></div>
-            </div>
-        </div>
-    </div>
-`;
+        `;
+        }
+
+        setInterval(updateDetails, 20 * 60 * 1000);
 
         updateDetailsProgressBars();
 
@@ -1112,6 +1120,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             }, timeToResfreshProgressBar);
         }
 
+        updateDetails();
     }
 })
 ;

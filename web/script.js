@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             return null;
         }
 
-        if (userId !== "350104566") {
+        if (userId !== "350104566" && userId !== "7059036846") {
             serverCard.classList.add("hidden");
         } else {
 

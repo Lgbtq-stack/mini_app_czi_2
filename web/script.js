@@ -786,7 +786,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <div class="shop-server-card">
                     <div class="server-icon-and-name">
                         <img class="server-icon" src="web/Content/server-icon.png" alt="Server Icon">
-                        <h2 class="server-name">Server #${index + 1}</h2>
+                        <h2 class="server-name">${server.name}</h2>
                     </div>
                     <div class="server-stats">
                         <div class="power-stat">
@@ -932,14 +932,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                         return;
                     }
 
-                    const {specs, country} = server;
+                    const {specs, country, name} = server;
 
                     const serverCard = document.createElement("div");
                     serverCard.className = "my-server-card";
                     serverCard.innerHTML = `
+                    <div class="server-card-header">
+                        <span class="server-index">#${index + 1}</span>
+                       <span class="server-flag">${getFlag(country)}</span>
+                    </div>
                     <div class="server-icon-and-name">
                         <img class="server-icon" src="web/Content/server-icon.png" alt="Server Icon">
-                        <h2 class="server-name">Server #${index + 1} ${getFlag(country)}</h2>
+                        <h2 class="server-name">${name}</h2>
                     </div>
                     <div class="server-stats">
                         <div class="power-stat">
@@ -997,18 +1001,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        const {
-            specs,
-            country,
-            created_at,
-            btc_mine,
-            name,
-        } = server;
-
+        const {specs, country, created_at, btc_mine, name} = server;
         const createdAt = new Date(created_at);
-        const currentDate = new Date();
-        const totalMinedDays = Math.floor((currentDate - createdAt) / (1000 * 3600 * 24));
-
         let totalBTC = 0;
 
         // Функция для расчёта BTC с учётом времени
@@ -1029,10 +1023,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             totalBTC += todayBTC;
         }
 
-        function updateDetails() {
-            calculateBTC();
-
-            detailsContent.innerHTML = `
+        // Первичная отрисовка деталей сервера
+        detailsContent.innerHTML = `
         <div class="server-details-stats">
             <div class="server-details-header">
                 <img class="server-details-icon" src="web/Content/server-icon.png" alt="Server Icon">
@@ -1040,7 +1032,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
             <div class="stat-details">
                 <span class="stat-details-title">Total Mined:</span>
-                <span class="stat-details-value">${totalBTC.toFixed(7)} BTC</span>
+                <span class="stat-details-value total-mined">0.0000000 BTC</span>
             </div>
             <div class="stat-details">
                 <span class="stat-details-title">Purchased On:</span>
@@ -1062,7 +1054,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
             <div class="progress-bar-wrapper">
                 <div class="power-details-progress-bar">
-                    <div class="power-details-progress" style="width: ${Math.min(specs.power / 16, 100)}%;"></div>
+                    <div class="power-details-progress"></div>
                 </div>
             </div>
             <div class="stat-details">
@@ -1071,7 +1063,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
             <div class="progress-bar-wrapper">
                 <div class="hashrate-details-progress-bar">
-                    <div class="hashrate-details-progress" style="width: ${Math.min(specs.hashrate / 12, 100)}%;"></div>
+                    <div class="hashrate-details-progress"></div>
                 </div>
             </div>
             <div class="stat-details">
@@ -1080,27 +1072,22 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
             <div class="progress-bar-wrapper">
                 <div class="ram-details-progress-bar">
-                    <div class="ram-details-progress" style="width: ${Math.min(specs.ram / 23, 100)}%;"></div>
+                    <div class="ram-details-progress"></div>
                 </div>
             </div>
         </div>
-        `;
-        }
+    `;
 
-        setInterval(updateDetails, 20 * 60 * 1000);
+        function updateDetails() {
+            calculateBTC();
 
-        updateDetailsProgressBars();
+            // Обновление Total Mined
+            const totalMinedElement = detailsContent.querySelector(".total-mined");
+            if (totalMinedElement) {
+                totalMinedElement.textContent = `${totalBTC.toFixed(7)} BTC`;
+            }
 
-        detailsContainer.classList.remove("hidden");
-        detailsContainer.style.display = "block";
-
-        const closeButton = document.getElementById("close-server-details");
-        closeButton.addEventListener("click", () => {
-            detailsContainer.classList.add("hidden");
-            detailsContainer.style.display = "none";
-        });
-
-        function updateDetailsProgressBars() {
+            // Обновление прогресс-баров
             const powerProgress = detailsContent.querySelector(".power-details-progress");
             const hashrateProgress = detailsContent.querySelector(".hashrate-details-progress");
             const ramProgress = detailsContent.querySelector(".ram-details-progress");
@@ -1109,20 +1096,35 @@ document.addEventListener("DOMContentLoaded", async function () {
                 return Math.random() * (max - min) + min;
             }
 
-            setInterval(() => {
-                if (powerProgress) {
-                    powerProgress.style.width = `${getRandomValue(90, 100)}%`;
-                }
-                if (hashrateProgress) {
-                    hashrateProgress.style.width = `${getRandomValue(90, 100)}%`;
-                }
-                if (ramProgress) {
-                    ramProgress.style.width = `${getRandomValue(90, 100)}%`;
-                }
-            }, timeToResfreshProgressBar);
+            if (powerProgress) {
+                const powerWidth = getRandomValue(90, 100);
+                powerProgress.style.width = `${powerWidth}%`;
+            }
+            if (hashrateProgress) {
+                const hashrateWidth = getRandomValue(90, 100);
+                hashrateProgress.style.width = `${hashrateWidth}%`;
+            }
+            if (ramProgress) {
+                const ramWidth = getRandomValue(90, 100);
+                ramProgress.style.width = `${ramWidth}%`;
+            }
         }
 
+        const interval = setInterval(updateDetails, 2000);
+
+        detailsContainer.classList.remove("hidden");
+        detailsContainer.style.display = "block";
+
+        const closeButton = document.getElementById("close-server-details");
+        closeButton.addEventListener("click", () => {
+            detailsContainer.classList.add("hidden");
+            detailsContainer.style.display = "none";
+            clearInterval(interval);
+        });
+
+        // Первое обновление
         updateDetails();
     }
+
 })
 ;

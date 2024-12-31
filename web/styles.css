@@ -608,7 +608,7 @@ html, body {
 .stat {
     background: linear-gradient(90deg, #fdf177, #fcd32d);
     border-radius: 8px;
-    padding: 8px 15px;
+    padding: 8px 20px;
     font-size: 14px;
     font-weight: bold;
     color: #333;
@@ -1026,7 +1026,6 @@ html, body {
     width: 400px;
     max-width: 90%;
     min-width: 30%;
-    background-color: rgba(97, 97, 97, 0.7);
     padding: 20px;
     box-sizing: border-box;
     z-index: 10000;
@@ -1172,4 +1171,27 @@ html, body {
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+.server-card-header {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.server-index {
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.server-flag {
+    width: 20px;
+    height: 15px;
+    border-radius: 2px;
+    object-fit: cover;
 }

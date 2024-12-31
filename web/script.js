@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const usedPositionsBottom = [];
     let totalBtcMine = 0;
 
+    let totalBTC = 0;
 
     const localConfig = {
         "user_id": "350104566",
@@ -98,7 +99,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 "name": "Ultra Titan Series",
                 "country": "US",
                 "available": 100,
-                "created_at": "2024-12-29T01:13:40.956881",
+                "created_at": "2024-12-30T09:13:40.956881",
                 "total_mined_days": 0
             },
             "h900p1800r1024g256": {
@@ -139,12 +140,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             return null;
         }
 
-        // if (userId !== "350104566") {
-        //     serverCard.classList.add("hidden");
-        // } else {
 
-            serverCard.classList.remove("hidden");
-        //}
+        serverCard.classList.remove("hidden");
+
     } catch
         (error) {
         console.error("Ошибка при получении конфигурации:", error);
@@ -170,9 +168,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     await loadShopServerCards();
     await loadServers();
     await setupBuyButtons();
-    initializeDashboardFromItems();
-    const totalBTC = calculateTotalBTC(wallet_data);
 
+    calculateTotalBTC(wallet_data);
+
+    setInterval(() => {
+        calculateTotalBTC(wallet_data);
+    }, 2000);
+
+    initializeDashboardFromItems();
 
     if (wallet_data.servers && Object.keys(wallet_data.servers).length > 0)
         startMiningProgress(wallet_data);
@@ -590,9 +593,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (totalBtcMineProgress) {
             totalBtcMineProgress.style.width = `100%`;
         }
-        if (dashboardBtcMineValue) {
-            dashboardBtcMineValue.textContent = `${totalBTC.toFixed(4)} BTC`;  // Начальный баланс
-        }
+        // if (dashboardBtcMineValue) {
+        //     dashboardBtcMineValue.textContent = `${totalBTC.toFixed(4)} BTC`;  // Начальный баланс
+        // }
 
         // Функция для обновления прогресса в течение дня
         function updateMiningProgress() {
@@ -604,22 +607,22 @@ document.addEventListener("DOMContentLoaded", async function () {
                 if (totalBtcMineProgress) {
                     totalBtcMineProgress.style.width = `${progressPercent}%`;
                 }
-                if (dashboardBtcMineValue) {
-                    dashboardBtcMineValue.textContent = `${initialBtcMine.toFixed(4)} BTC`;  // Обновляем отображение баланса
-                }
+                // if (dashboardBtcMineValue) {
+                //     dashboardBtcMineValue.textContent = `${initialBtcMine.toFixed(4)} BTC`;  // Обновляем отображение баланса
+                // }
                 currentInterval++;  // Увеличиваем интервал
             }
         }
 
-        // Обновляем каждый полчаса (30 минут)
+
         setInterval(updateMiningProgress, 30 * 60 * 1000);
     }
 
     function calculateTotalBTC(wallet_data) {
         let totalBTC = 0;
 
-        // Используем Object.values для получения массива всех серверов
-        Object.values(wallet_data.servers).forEach(server => {
+        // Обходим все серверы
+        Object.values(wallet_data.servers).forEach((server) => {
             const {
                 created_at,
                 btc_mine,
@@ -628,32 +631,31 @@ document.addEventListener("DOMContentLoaded", async function () {
             const createdAt = new Date(created_at);
             const currentDate = new Date();
 
-            const totalMinedDays = Math.floor((currentDate - createdAt) / (1000 * 3600 * 24));
+            // Вычисляем полное количество дней с момента покупки
+            const elapsedMilliseconds = currentDate - createdAt;
+            const elapsedDays = Math.floor(elapsedMilliseconds / (1000 * 3600 * 24));
 
-            let todayBTC = 0;
+            let serverTotalBTC = elapsedDays * btc_mine;
 
-            if (totalMinedDays === 0) {
-                const currentHour = currentDate.getUTCHours();
-                const currentMinutes = currentDate.getUTCMinutes();
+            // Учитываем текущий день
+            const currentHour = currentDate.getUTCHours();
+            const currentMinutes = currentDate.getUTCMinutes();
+            const currentSeconds = currentDate.getUTCSeconds();
 
-                const remainingHours = 24 - currentHour - (currentMinutes / 60);
-                todayBTC = (btc_mine / 24) * remainingHours;
-            } else {
-                todayBTC = btc_mine;
-            }
+            const elapsedTimeToday = (currentHour * 3600 + currentMinutes * 60 + currentSeconds) / (24 * 3600);
+            serverTotalBTC += btc_mine * elapsedTimeToday;
 
-
-            const totalBTCForServer = totalMinedDays * btc_mine + todayBTC;
-
-
-            totalBTC += totalBTCForServer;
+            // Добавляем BTC сервера к общему количеству
+            totalBTC += serverTotalBTC;
         });
 
-
+        // Обновляем отображение на дашборде
         const dashboardBtcMineValue = document.querySelector('.total-btc-mine-value');
+        if (dashboardBtcMineValue) {
+            dashboardBtcMineValue.textContent = `${totalBTC.toFixed(9)} BTC`;
+        }
 
-        dashboardBtcMineValue.textContent = `${totalBTC.toFixed(4)} BTC`;
-        return totalBTC.toFixed(4);
+        return totalBTC;
     }
 
 
@@ -1038,7 +1040,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
             <div class="stat-details">
                 <span class="stat-details-title">Total Mined:</span>
-                <span class="stat-details-value">${totalBTC.toFixed(4)} BTC</span>
+                <span class="stat-details-value">${totalBTC.toFixed(7)} BTC</span>
             </div>
             <div class="stat-details">
                 <span class="stat-details-title">Purchased On:</span>

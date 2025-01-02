@@ -780,7 +780,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const server = servers[serverId];
                 const isSoldOut = server.specs.available === 0;
                 const buttonClass = isSoldOut ? "sold-out-button" : "buy-new-server-button";
-                const buttonText = isSoldOut ? "Sold Out" : "Buy";
+                const buttonText = isSoldOut ? "Sold Out" : `${server.price} XML`;
 
                 const cardHtml = `
                 <div class="shop-server-card">

@@ -781,8 +781,8 @@ html, body {
 .gpu-name-stat-container,
 .ram-stat-container,
 .price-stat-container,
-.availability-stat-container,
 .status-stat-container,
+.country-stat-container,
 .ram-stat-container {
     background: #ffeb3b;
     padding: 10px 10px;
@@ -790,8 +790,8 @@ html, body {
 }
 
 .hashrate-stat-container,
+.availability-stat-container,
 .gpu-count-stat-container,
-.country-stat-container,
 .btc-mine-stat-container {
     padding: 0 10px;
 }

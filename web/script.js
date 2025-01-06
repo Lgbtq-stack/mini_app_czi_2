@@ -53,17 +53,23 @@ document.addEventListener("DOMContentLoaded", async function () {
         "tokens": {
             "BTC": {
                 "balance": 1.25,
-                "history": {
-                    "2024-12-18T02:00:00Z": 0.000442,
-                    "2024-12-20T02:00:00Z": 0.0004409,
-                    "2024-12-25T02:00:00Z": 0.0004409,
-                    "2024-12-19T02:00:00Z": 0.0004409,
-                    "2024-12-21T02:00:00Z": 0.0004409,
-                    "2024-12-26T02:00:00Z": 0.0004409,
-                    "2024-12-22T02:00:00Z": 0.0004409,
-                    "2024-12-23T02:00:00Z": 0.0004409,
-                    "2024-12-24T02:00:00Z": 0.0004409
-                },
+                "history": [
+                    {
+                        "time": "2025-01-04T02:00:33Z",
+                        "amount": 0.01
+                    },
+                    {
+                        "time": "2025-01-04T02:00:33Z",
+                        "amount": 0.0035594
+                    },
+                    {
+                        "time": "2025-01-05T02:00:33Z",
+                        "amount": 0.01
+                    },
+                    {
+                        "time": "2025-01-05T02:00:33Z",
+                        "amount": 0.0035741
+                    }],
                 "btc_get_time": "18:00:00",
             }
         },
@@ -236,9 +242,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             Object.keys(data.tokens).forEach(token => {
                 const iconUrl = logo[token] || "https://via.placeholder.com/40";
-                const historyEntries = data.tokens[token]?.history
-                    ? Object.entries(data.tokens[token].history).sort((a, b) => new Date(b[0]) - new Date(a[0]))
-                    : [];
+                const historyEntries = data.tokens[token]?.history || [];
 
                 if (historyEntries.length === 0) {
                     const noDataElement = document.createElement("div");
@@ -246,17 +250,20 @@ document.addEventListener("DOMContentLoaded", async function () {
                     noDataElement.textContent = `No Data`;
                     historyBody.appendChild(noDataElement);
                 } else {
-                    historyEntries.forEach(([date, amount]) => {
-                        const formattedDate = new Date(date).toLocaleDateString("en-US");
-                        const formattedTime = new Date(date).toLocaleTimeString("en-US", {
+                    const sortedHistory = historyEntries.sort((a, b) => new Date(b.time) - new Date(a.time));
+
+                    sortedHistory.forEach(entry => {
+                        const formattedDate = new Date(entry.time).toLocaleDateString("en-US");
+                        const formattedTime = new Date(entry.time).toLocaleTimeString("en-US", {
                             hour: "2-digit",
                             minute: "2-digit"
                         });
-                        addHistoryItem(iconUrl, `You received \n  ${amount} ${token}`, formattedTime, formattedDate);
+                        addHistoryItem(iconUrl, `You received \n  ${entry.amount} ${token}`, formattedTime, formattedDate);
                     });
                 }
             });
         }
+
     }
 
     function addHistoryItem(iconUrl, description, time, date) {

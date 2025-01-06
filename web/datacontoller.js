@@ -7,11 +7,23 @@ import {getActiveWallet} from './Core/database.js';
 //     "tokens": {
 //     "BTC": {
 //         "balance": 1.25,
-//             "history": {
-//             "2024-12-10T13:37:50.124Z": 0.25,
-//                 "2024-12-11T13:37:50.124Z": 0.5,
-//                 "2024-12-12T13:37:50.124Z": 0.5
-//         },
+//             "history": [
+//                     {
+//                         "time": "2025-01-04T02:00:33Z",
+//                         "amount": 0.01
+//                     },
+//                     {
+//                         "time": "2025-01-04T02:00:33Z",
+//                         "amount": 0.0035594
+//                     },
+//                     {
+//                         "time": "2025-01-05T02:00:33Z",
+//                         "amount": 0.01
+//                     },
+//                     {
+//                         "time": "2025-01-05T02:00:33Z",
+//                         "amount": 0.0035741
+//                     }],
 //         "time_to_mine": "2024-12-12T20:00:00Z"
 //     }
 // }
@@ -20,7 +32,7 @@ import {getActiveWallet} from './Core/database.js';
 //user-id 350104566
 export async function get_config(user_id) {
     const wallet_data = await getActiveWallet(user_id);
-    const balance = Object.values(wallet_data.history).reduce((acc, val) => acc + val, 0);
+    const balance = wallet_data.history.reduce((acc, val) => acc + val.amount, 0);
 
 // return wallet_data;
     return {
